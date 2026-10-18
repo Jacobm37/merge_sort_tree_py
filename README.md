@@ -35,3 +35,10 @@ The specific problem this exists for: you have an array that never changes, and 
 - Out-of-range indices are clamped to `[0, len(data)]`.
 - Negative integers are supported as data values.
 - Duplicates are handled correctly: `count_leq` uses the right insertion point, `count_less` uses the left, and `count_eq` is their difference.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
